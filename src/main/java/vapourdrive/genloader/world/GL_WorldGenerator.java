@@ -30,29 +30,19 @@ public class GL_WorldGenerator implements IWorldGenerator
 	@Override
 	public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider)
 	{
-		Iterator<Generation> iterator = GenerationManager.finalGenerators.iterator();
-		while (iterator.hasNext())
-		{
-			Generation generation = iterator.next();
-			if (random.nextFloat() < generation.getChance())
-			{
-				if (generation.getDimensions().contains(world.provider.getDimension()))
-				{
+		for (Generation generation : GenerationManager.finalGenerators) {
+			if (random.nextFloat() < generation.getChance()) {
+				if (generation.getDimensions().contains(world.provider.getDimension())) {
 					if (noSetBiomeFilter(generation)
-							|| isBiomeValid(world, chunkX, chunkZ, generation.getBiomeTypes(), generation.getBiomeNames()))
-					{
+							|| isBiomeValid(world, chunkX, chunkZ, generation.getBiomeTypes(), generation.getBiomeNames())) {
 						IBlockState toReplace = generation.getBlockToReplace();
 
-						if (generation.getGeneratorType() == EnumGenerationType.STANDARDVARIABLECLUSTER)
-						{
+						if (generation.getGeneratorType() == EnumGenerationType.STANDARDVARIABLECLUSTER) {
 							WeightedWorldGenMinable generator = new WeightedWorldGenMinable(generation.getWeightedBlocks(),
 									generation.getSize(), new IBlockStateHelper(toReplace));
 							generateStandardOre(random, chunkX, chunkZ, world, generation.getFrequency(), generator, generation.getMinY(),
 									generation.getMaxY());
-						}
-
-						else if (generation.getGeneratorType() == EnumGenerationType.WEIGHTEDVARIABLECLUSTER)
-						{
+						} else if (generation.getGeneratorType() == EnumGenerationType.WEIGHTEDVARIABLECLUSTER) {
 							WeightedWorldGenMinable generator = new WeightedWorldGenMinable(generation.getWeightedBlocks(),
 									generation.getSize(), new IBlockStateHelper(toReplace));
 							generateWeightedOre(random, chunkX, chunkZ, world, generation.getFrequency(), generator, generation.getMinY(),

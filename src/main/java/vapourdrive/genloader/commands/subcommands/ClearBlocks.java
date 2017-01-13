@@ -9,9 +9,9 @@ import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.fml.common.registry.GameData;
@@ -25,7 +25,7 @@ public class ClearBlocks
 	{
 		if (args.length < 6)
 		{
-			sender.addChatMessage(new ChatComponentTranslation("genloader.notenoughargs"));
+			sender.sendMessage(new TextComponentTranslation("genloader.notenoughargs"));
 			return;
 		}
 		int CXmin = CommandBase.parseInt(args[1]);
@@ -35,7 +35,7 @@ public class ClearBlocks
 
 		if ((CXmax - CXmin) * (CZmax - CZmin) > 25)
 		{
-			sender.addChatMessage(new ChatComponentTranslation("genloader.areatoolarge"));
+			sender.sendMessage(new TextComponentTranslation("genloader.areatoolarge"));
 			return;
 		}
 
@@ -79,7 +79,7 @@ public class ClearBlocks
 						int maxheight = world.getChunkFromBlockCoords(new BlockPos(k, 0, l)).getTopFilledSegment() + 16;
 						for (int m = 0; m < maxheight; m++)
 						{
-							if (haveJunk && world.getBlockState(new BlockPos(k, m, l)) != Blocks.bedrock.getDefaultState() && !GenLoaderAPI.getValuableBlockStates().contains(world.getBlockState(new BlockPos(k, m, l))))
+							if (haveJunk && world.getBlockState(new BlockPos(k, m, l)) != Blocks.BEDROCK.getDefaultState() && !GenLoaderAPI.getValuableBlockStates().contains(world.getBlockState(new BlockPos(k, m, l))))
 							{
 								world.setBlockToAir(new BlockPos(k, m, l));
 							}

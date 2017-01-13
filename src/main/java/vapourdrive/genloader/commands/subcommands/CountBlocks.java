@@ -3,6 +3,8 @@ package vapourdrive.genloader.commands.subcommands;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextComponentTranslation;
 import vapourdrive.genloader.api.GenLoaderAPI;
 import vapourdrive.genloader.api.utils.BlockUtils;
 import net.minecraft.block.Block;
@@ -10,9 +12,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
@@ -25,7 +25,7 @@ public class CountBlocks
 	{
 		if (args.length < 6)
 		{
-			sender.addChatMessage(new ChatComponentTranslation("genloader.notenoughargs"));
+			sender.sendMessage(new TextComponentTranslation("genloader.notenoughargs"));
 			return;
 		}
 		int CXmin = CommandBase.parseInt(args[1]);
@@ -35,7 +35,7 @@ public class CountBlocks
 
 		if ((CXmax - CXmin) * (CZmax - CZmin) > 25)
 		{
-			sender.addChatMessage(new ChatComponentTranslation("genloader.areatoolarge"));
+			sender.sendMessage(new TextComponentTranslation("genloader.areatoolarge"));
 			return;
 		}
 
@@ -48,7 +48,7 @@ public class CountBlocks
 			for(IBlockState valuable : GenLoaderAPI.getValuableBlockStates())
 			{
 				int Count = countObjects(CXmin, CXmax, CZmin, CZmax, sender, block, valuable);
-				sender.addChatMessage(new ChatComponentText(valuable.toString() + " " + String.valueOf(Count)));
+				sender.sendMessage(new TextComponentString(valuable.toString() + " " + String.valueOf(Count)));
 			}
 			return;
 		}
@@ -70,7 +70,7 @@ public class CountBlocks
 		state = BlockUtils.createState(toCount, properties);
 
 		int Count = countObjects(CXmin, CXmax, CZmin, CZmax, sender, block, state);
-		sender.addChatMessage(new ChatComponentText(" " + state.toString() + " " + String.valueOf(Count)));
+		sender.sendMessage(new TextComponentString(" " + state.toString() + " " + String.valueOf(Count)));
 	}
 	
 	public static int countObjects(int CXmin, int CXmax, int CZmin, int CZmax, ICommandSender sender, Block block, IBlockState state)

@@ -10,6 +10,8 @@ import java.util.Map.Entry;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.common.registry.GameData;
 
 import org.apache.logging.log4j.Level;
@@ -27,16 +29,14 @@ public class BlockDump
 
 	public static void init(File configPath)
 	{
-		for (Block block : GameData.getBlockRegistry().typeSafeIterable())
+		for (Block block : ForgeRegistries.BLOCKS.getValues())
 		{
-			String mod = GameData.getBlockRegistry().getNameForObject(block).getResourceDomain().toString();
-			String name = GameData.getBlockRegistry().getNameForObject(block).getResourcePath().toString();
+			ResourceLocation location = ForgeRegistries.BLOCKS.getKey(block);
+			String mod = location.getResourceDomain();
+			String name = location.getResourcePath();
 			ImmutableList<IBlockState> states = block.getBlockState().getValidStates();
 			ArrayList<String> statesStrings = new ArrayList<String>();
-			Iterator<IBlockState> iterator = states.iterator();
-			while (iterator.hasNext())
-			{
-				IBlockState tempState = iterator.next();
+			for (IBlockState tempState : states) {
 				statesStrings.add(tempState.toString());
 			}
 			if (ModLists.containsKey(mod))
@@ -51,12 +51,8 @@ public class BlockDump
 			}
 		}
 
-		Iterator<Entry<String, ArrayList<BlockInfo>>> iterator = ModLists.entrySet().iterator();
-		while (iterator.hasNext())
-		{
-			Entry<String, ArrayList<BlockInfo>> entry = iterator.next();
-			try
-			{
+		for (Entry<String, ArrayList<BlockInfo>> entry : ModLists.entrySet()) {
+			try {
 				File blockDump = new File(configPath + "/genloader/dumps/blocks/", entry.getKey() + ".json");
 				blockDump.getParentFile().mkdirs();
 				GenLoaderAPI.log.log(Level.INFO, "Created File: " + entry.getKey() + ".json");
@@ -66,9 +62,7 @@ public class BlockDump
 
 				writer.write(stream);
 				writer.close();
-			}
-			catch (IOException error)
-			{
+			} catch (IOException error) {
 			}
 		}
 	}

@@ -3,6 +3,7 @@ package vapourdrive.genloader.commands;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.server.MinecraftServer;
 import org.apache.logging.log4j.Level;
 
 import net.minecraft.command.CommandException;
@@ -14,6 +15,8 @@ import vapourdrive.genloader.api.GenLoaderAPI;
 import vapourdrive.genloader.commands.subcommands.ClearBlocks;
 import vapourdrive.genloader.commands.subcommands.CountBlocks;
 
+import javax.annotation.Nullable;
+
 public class GenLoaderCommand implements ICommand
 {
 	@Override
@@ -23,28 +26,42 @@ public class GenLoaderCommand implements ICommand
 	}
 
 	@Override
-	public String getCommandName()
+	public String getName()
 	{
 		return "genloader";
 	}
 
 	@Override
-	public String getCommandUsage(ICommandSender sender)
+	public String getUsage(ICommandSender sender)
 	{
 		return "genloader <text>";
 	}
 
 	@Override
-	public List<String> getCommandAliases()
+	public List<String> getAliases()
 	{
 		ArrayList<String> aliases = new ArrayList<String>();
-		aliases.add(getCommandName());
+		aliases.add(getName());
 		return aliases;
 	}
 
 	@Override
-	public boolean canCommandSenderUseCommand(ICommandSender sender)
-	{
+	public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
+		if (args.length > 0)
+		{
+			if(args[0].contains("countblocks"))
+			{
+				CountBlocks.processCommand(sender, args);
+			}
+			if(args[0].contains("clearblocks"))
+			{
+				ClearBlocks.processCommand(sender, args);
+			}
+		}
+	}
+
+	@Override
+	public boolean checkPermission(MinecraftServer server, ICommandSender sender) {
 		if (sender.getCommandSenderEntity() instanceof EntityPlayer)
 		{
 			EntityPlayer player = (EntityPlayer) sender.getCommandSenderEntity();
@@ -57,8 +74,7 @@ public class GenLoaderCommand implements ICommand
 	}
 
 	@Override
-	public List<String> addTabCompletionOptions(ICommandSender sender, String[] args, BlockPos pos)
-	{
+	public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos) {
 		ArrayList<String> argsList = new ArrayList<String>();
 		if(args.length == 1)
 		{
@@ -85,19 +101,4 @@ public class GenLoaderCommand implements ICommand
 		return false;
 	}
 
-	@Override
-	public void processCommand(ICommandSender sender, String[] args) throws CommandException
-	{
-		if (args.length > 0)
-		{
-			if(args[0].contains("countblocks"))
-			{
-				CountBlocks.processCommand(sender, args);
-			}
-			if(args[0].contains("clearblocks"))
-			{
-				ClearBlocks.processCommand(sender, args);
-			}
-		}
-	}
 }

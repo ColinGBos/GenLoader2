@@ -44,14 +44,14 @@ public class GenLoaderAPI
 	 * @param size the approximate max size of the generator (number on blocks in a cluster)
 	 * @param dimensionIDs an arraylist of valid dimension ids (0 for overworld, -1 for nether, 1 for end) - required
 	 * @param biomeTypes an arraylist of valid biome types
-	 * @param biomeIDs an arraylist of valid biome IDs, checked after Type
+	 * @param biomeNames an arraylist of valid biome names (strings), checked after Type
 	 * @param weightedBlockStates an array of weighted blocks, determines the blocks weight for it's occurrence in the generation
 	 * @param toReplace simply an object that contains a IBlockState that I have set up to parce nicely, block which can get replaced on generation
 	 */
 	public static void addGeneration(IGenerationCategory category, EnumGenerationPriority genPriority, EnumGenerationType genType, float chance, int frequency, int minY, int maxY, int size,
-			ArrayList<Integer> dimensionIDs, ArrayList<Type> biomeTypes, ArrayList<Integer> biomeIDs, IWeightedBlockState[] weightedBlockStates, IParsableBlockState toReplace)
+			ArrayList<Integer> dimensionIDs, ArrayList<Type> biomeTypes, ArrayList<String> biomeNames, IWeightedBlockState[] weightedBlockStates, IParsableBlockState toReplace)
 	{
-		addGeneration(new Generation(category, genPriority, genType, chance, frequency, minY, maxY, size, dimensionIDs, biomeTypes, biomeIDs, weightedBlockStates, toReplace));
+		addGeneration(new Generation(category, genPriority, genType, chance, frequency, minY, maxY, size, dimensionIDs, biomeTypes, biomeNames, weightedBlockStates, toReplace));
 	}
 	
 	/**
@@ -72,7 +72,7 @@ public class GenLoaderAPI
 	{
 		ArrayList<Integer> defaultOverworld = new ArrayList<Integer>();
 		defaultOverworld.add(0);
-		addGeneration(new Generation(category, EnumGenerationPriority.LATER, genType, 1.0f, frequency, minY, maxY, size, defaultOverworld, null, null, weightedBlockStates, new ParsableBlockState(Blocks.stone.getDefaultState())));
+		addGeneration(new Generation(category, EnumGenerationPriority.LATER, genType, 1.0f, frequency, minY, maxY, size, defaultOverworld, null, null, weightedBlockStates, new ParsableBlockState(Blocks.STONE.getDefaultState())));
 	}
 	
 	/**
