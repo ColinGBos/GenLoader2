@@ -11,7 +11,7 @@ public class VanillaGenDisabler
 	@SubscribeEvent
 	public void genDisabler(OreGenEvent.GenerateMinable event)
 	{
-		EventType type = event.type;
+		EventType type = event.getType();
 		if (type == EventType.COAL || type == EventType.DIAMOND || type == EventType.GOLD || type == EventType.IRON
 				|| type == EventType.LAPIS || type == EventType.QUARTZ || type == EventType.REDSTONE || type == EventType.EMERALD)
 		{

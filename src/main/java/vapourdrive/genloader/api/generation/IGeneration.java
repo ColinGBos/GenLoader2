@@ -28,7 +28,7 @@ public interface IGeneration
 	
 	public ArrayList<Type> getBiomeTypes();
 	
-	public ArrayList<Integer> getBiomeIDs();
+	public ArrayList<String> getBiomeNames();
 	
 	public IWeightedBlockState[] getWeightedBlocks();
 	

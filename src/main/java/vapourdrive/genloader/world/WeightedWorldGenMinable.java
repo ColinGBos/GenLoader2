@@ -5,10 +5,10 @@ import java.util.Iterator;
 import java.util.Random;
 
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.block.state.pattern.BlockHelper;
+import net.minecraft.block.state.pattern.BlockMatcher;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
 import vapourdrive.genloader.api.serializeable.IWeightedBlockState;
@@ -37,7 +37,7 @@ public class WeightedWorldGenMinable extends WorldGenerator
 	
 	public WeightedWorldGenMinable(IWeightedBlockState[] WeightedBlocks, int NumberOfBlocks)
 	{
-		this(WeightedBlocks, NumberOfBlocks, BlockHelper.forBlock(Blocks.stone));
+		this(WeightedBlocks, NumberOfBlocks, BlockMatcher.forBlock(Blocks.STONE));
 	}
 	
 	@Override
@@ -60,12 +60,12 @@ public class WeightedWorldGenMinable extends WorldGenerator
             double d9 = rand.nextDouble() * (double)this.numberOfBlocks / 16.0D;
             double d10 = (double)(MathHelper.sin((float)Math.PI * f1) + 1.0F) * d9 + 1.0D;
             double d11 = (double)(MathHelper.sin((float)Math.PI * f1) + 1.0F) * d9 + 1.0D;
-            int j = MathHelper.floor_double(d6 - d10 / 2.0D);
-            int k = MathHelper.floor_double(d7 - d11 / 2.0D);
-            int l = MathHelper.floor_double(d8 - d10 / 2.0D);
-            int i1 = MathHelper.floor_double(d6 + d10 / 2.0D);
-            int j1 = MathHelper.floor_double(d7 + d11 / 2.0D);
-            int k1 = MathHelper.floor_double(d8 + d10 / 2.0D);
+            int j = MathHelper.floor(d6 - d10 / 2.0D);
+            int k = MathHelper.floor(d7 - d11 / 2.0D);
+            int l = MathHelper.floor(d8 - d10 / 2.0D);
+            int i1 = MathHelper.floor(d6 + d10 / 2.0D);
+            int j1 = MathHelper.floor(d7 + d11 / 2.0D);
+            int k1 = MathHelper.floor(d8 + d10 / 2.0D);
 
             for (int l1 = j; l1 <= i1; ++l1)
             {
@@ -87,7 +87,8 @@ public class WeightedWorldGenMinable extends WorldGenerator
                                 {
                                     BlockPos blockpos = new BlockPos(l1, i2, j2);
 
-                                    if (worldIn.getBlockState(blockpos).getBlock().isReplaceableOreGen(worldIn, blockpos, this.toReplace) && (this.toReplace).apply(worldIn.getBlockState(blockpos)))
+                                    IBlockState state = worldIn.getBlockState(blockpos);
+                                    if (state.getBlock().isReplaceableOreGen(state, worldIn, blockpos, this.toReplace))
                                     {
                                         setBlock(worldIn, rand, blockpos);
                                     }

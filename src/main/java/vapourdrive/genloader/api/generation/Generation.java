@@ -19,11 +19,11 @@ public class Generation implements IGeneration
 	private final int size;
 	private final ArrayList<Integer> dimensions;
 	private final ArrayList<Type> biomeTypes;
-	private final ArrayList<Integer> biomeIDs;
+	private final ArrayList<String> biomeNames;
 	private final IWeightedBlockState[] weightedBlocks;
 	private final IParsableBlockState blockToReplace;
 	
-	public Generation(IGenerationCategory Category, EnumGenerationPriority GeneratorPriority, EnumGenerationType GeneratorType, float Chance, int Frequency, int MinY, int MaxY, int Size, ArrayList<Integer> Dimensions, ArrayList<Type> BiomeTypes, ArrayList<Integer> BiomeIDs, IWeightedBlockState[] WeightedBlocks, IParsableBlockState BlockToReplace)
+	public Generation(IGenerationCategory Category, EnumGenerationPriority GeneratorPriority, EnumGenerationType GeneratorType, float Chance, int Frequency, int MinY, int MaxY, int Size, ArrayList<Integer> Dimensions, ArrayList<Type> BiomeTypes, ArrayList<String> BiomeNames, IWeightedBlockState[] WeightedBlocks, IParsableBlockState BlockToReplace)
 	{
 		this.category = Category;
 		this.generatorPriority = GeneratorPriority;
@@ -35,7 +35,7 @@ public class Generation implements IGeneration
 		this.dimensions = Dimensions;
 		this.weightedBlocks = WeightedBlocks;
 		this.biomeTypes = BiomeTypes;
-		this.biomeIDs = BiomeIDs;
+		this.biomeNames = BiomeNames;
 		this.blockToReplace = BlockToReplace;
 		this.chance = Chance;
 	}
@@ -90,9 +90,9 @@ public class Generation implements IGeneration
 		return this.biomeTypes;
 	}
 	
-	public ArrayList<Integer> getBiomeIDs()
+	public ArrayList<String> getBiomeNames()
 	{
-		return this.biomeIDs;
+		return this.biomeNames;
 	}
 	
 	public IWeightedBlockState[] getWeightedBlocks()

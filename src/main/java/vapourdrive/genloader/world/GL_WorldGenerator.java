@@ -6,9 +6,10 @@ import java.util.Iterator;
 import java.util.Random;
 
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
+import net.minecraft.world.chunk.IChunkGenerator;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraftforge.common.BiomeDictionary;
@@ -27,7 +28,7 @@ public class GL_WorldGenerator implements IWorldGenerator
 	}
 
 	@Override
-	public void generate(Random random, int chunkX, int chunkZ, World world, IChunkProvider chunkGenerator, IChunkProvider chunkProvider)
+	public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider)
 	{
 		Iterator<Generation> iterator = GenerationManager.finalGenerators.iterator();
 		while (iterator.hasNext())
@@ -35,10 +36,10 @@ public class GL_WorldGenerator implements IWorldGenerator
 			Generation generation = iterator.next();
 			if (random.nextFloat() < generation.getChance())
 			{
-				if (generation.getDimensions().contains(world.provider.getDimensionId()))
+				if (generation.getDimensions().contains(world.provider.getDimension()))
 				{
 					if (noSetBiomeFilter(generation)
-							|| isBiomeValid(world, chunkX, chunkZ, generation.getBiomeTypes(), generation.getBiomeIDs()))
+							|| isBiomeValid(world, chunkX, chunkZ, generation.getBiomeTypes(), generation.getBiomeNames()))
 					{
 						IBlockState toReplace = generation.getBlockToReplace();
 
@@ -65,14 +66,14 @@ public class GL_WorldGenerator implements IWorldGenerator
 
 	private boolean noSetBiomeFilter(Generation generation)
 	{
-		return generation.getBiomeTypes() == null && generation.getBiomeIDs() == null;
+		return generation.getBiomeTypes() == null && generation.getBiomeNames() == null;
 	}
 
-	private boolean isBiomeValid(World world, int chunkX, int chunkZ, ArrayList<Type> biomeTypes, ArrayList<Integer> biomeIDs)
+	private boolean isBiomeValid(World world, int chunkX, int chunkZ, ArrayList<Type> biomeTypes, ArrayList<String> biomeNames)
 	{
 		if (biomeTypes != null)
 		{
-			for (Type type : BiomeDictionary.getTypesForBiome(world.getBiomeGenForCoords(new BlockPos(chunkX * 16, 0, chunkZ * 16))))
+			for (Type type : BiomeDictionary.getTypes(world.getBiome(new BlockPos(chunkX * 16, 0, chunkZ * 16))))
 			{
 				if (biomeTypes.contains(type))
 				{
@@ -80,10 +81,10 @@ public class GL_WorldGenerator implements IWorldGenerator
 				}
 			}
 		}
-		if (biomeIDs != null)
+		if (biomeNames != null)
 		{
-			BiomeGenBase biome = world.getBiomeGenForCoords(new BlockPos(chunkX * 16, 0, chunkZ * 16));
-			if (biomeIDs.contains(biome.biomeID))
+			Biome biome = world.getBiome(new BlockPos(chunkX * 16, 0, chunkZ * 16));
+			if (biomeNames.contains(biome.getBiomeName()))
 			{
 				return true;
 			}
