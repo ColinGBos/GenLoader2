@@ -41,9 +41,9 @@ public class CommonProxy
 
 	public void postInit(FMLPostInitializationEvent event)
 	{
+		BlockDump.init(ConfigPath);
 		new GenerationManager(ConfigPath);
 		new GL_WorldGenerator(ConfigPath);
-		BlockDump.init(ConfigPath);
 	}
 
 	public void serverLoad(FMLServerStartingEvent event)

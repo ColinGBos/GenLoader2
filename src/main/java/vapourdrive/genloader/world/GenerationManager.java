@@ -56,29 +56,23 @@ public class GenerationManager
 	
 	public void dumpList(Gson gson, File configPath, HashMap<IGenerationCategory, ArrayList<IGeneration>> catGenerators2)
 	{
-		Iterator<Entry<IGenerationCategory, ArrayList<IGeneration>>> iterator = catGenerators2.entrySet().iterator();
-		while (iterator.hasNext())
-		{
-			Entry<IGenerationCategory, ArrayList<IGeneration>> entry = iterator.next();
-			try
-			{
+		for (Entry<IGenerationCategory, ArrayList<IGeneration>> entry : catGenerators2.entrySet()) {
+			try {
 				IGenerationCategory category = entry.getKey();
 				String suffix = category.getIsDefaultEnabled() ? ".json" : ".json.dis";
 				File file = new File(configPath, "/genloader/world/" + category.getCategoryName() + suffix);
 				file.getParentFile().mkdirs();
-				if (file.createNewFile())
-				{
+				if (file.createNewFile()) {
 					GenLoaderAPI.log.log(Level.INFO, "Created File: " + category.getCategoryName() + suffix);
+
 					String stream = gson.toJson(entry.getValue());
 
 					FileWriter writer = new FileWriter(file, true);
 
-					writer.write(stream);
+					writer.write(gson.toJson(stream));
 					writer.close();
 				}
-			}
-			catch (IOException error)
-			{
+			} catch (IOException error) {
 			}
 		}
 	}

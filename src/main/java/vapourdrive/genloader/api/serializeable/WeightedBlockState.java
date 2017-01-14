@@ -3,6 +3,7 @@ package vapourdrive.genloader.api.serializeable;
 import java.util.HashMap;
 
 import net.minecraft.block.state.IBlockState;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.common.registry.GameData;
 import vapourdrive.genloader.api.utils.BlockUtils;
 
@@ -16,7 +17,7 @@ public class WeightedBlockState implements IWeightedBlockState
 	public WeightedBlockState(int Weight, IBlockState State)
 	{
 		this.weight = Weight;
-		this.block = GameData.getBlockRegistry().getNameForObject(State.getBlock()).toString();
+		this.block = ForgeRegistries.BLOCKS.getKey(State.getBlock()).toString();
 		this.properties = BlockUtils.generateProperties(State);
 		this.state = State;
 	}
