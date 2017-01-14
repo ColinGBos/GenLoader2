@@ -13,9 +13,6 @@ import vapourdrive.genloader.api.utils.BlockUtils;
 
 public class WeightedBlockStateSerializer implements JsonSerializer<IWeightedBlockState>, JsonDeserializer<IWeightedBlockState>
 {
-	GsonBuilder builder = new GsonBuilder();
-	Gson gson = builder.create();
-
 	@Override
 	public JsonElement serialize(IWeightedBlockState src, Type typeOfSrc, JsonSerializationContext context)
 	{
@@ -25,7 +22,7 @@ public class WeightedBlockStateSerializer implements JsonSerializer<IWeightedBlo
 		Type type = new TypeToken<Map<String, String>>()
 		{
 		}.getType();
-		object.add("Properties", gson.toJsonTree(src.getProperties(), type));
+		object.add("Properties", context.serialize(src.getProperties(), type));
 		return object;
 	}
 
@@ -37,7 +34,7 @@ public class WeightedBlockStateSerializer implements JsonSerializer<IWeightedBlo
 		String block = object.get("Block").getAsString();
 		JsonObject array = object.get("Properties").getAsJsonObject();
 		Type type = new TypeToken<HashMap<String, String>>(){}.getType();
-		HashMap<String, String> map = gson.fromJson(array, type);
+		HashMap<String, String> map = context.deserialize(array, type);
 		return new WeightedBlockState(Weight, BlockUtils.createState(block, map));
 	}
 }

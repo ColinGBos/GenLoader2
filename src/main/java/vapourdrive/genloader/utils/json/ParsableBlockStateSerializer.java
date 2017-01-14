@@ -13,9 +13,6 @@ import vapourdrive.genloader.api.utils.BlockUtils;
 
 public class ParsableBlockStateSerializer implements JsonSerializer<IParsableBlockState>, JsonDeserializer<IParsableBlockState>
 {
-	GsonBuilder builder = new GsonBuilder();
-	Gson gson = builder.create();
-	
 	@Override
 	public JsonElement serialize(IParsableBlockState src, Type typeOfSrc, JsonSerializationContext context)
 	{
@@ -24,7 +21,7 @@ public class ParsableBlockStateSerializer implements JsonSerializer<IParsableBlo
 		Type type = new TypeToken<Map<String, String>>()
 		{
 		}.getType();
-		object.add("Properties", gson.toJsonTree(src.getProperties(), type));
+		object.add("Properties", context.serialize(src.getProperties(), type));
 		return object;
 	}
 
@@ -35,7 +32,7 @@ public class ParsableBlockStateSerializer implements JsonSerializer<IParsableBlo
 		String block = object.get("Block").getAsString();
 		JsonObject array = object.get("Properties").getAsJsonObject();
 		Type type = new TypeToken<HashMap<String, String>>(){}.getType();
-		HashMap<String, String> map = gson.fromJson(array, type);
+		HashMap<String, String> map = context.deserialize(array, type);
 		return new ParsableBlockState(BlockUtils.createState(block, map));
 	}
 
