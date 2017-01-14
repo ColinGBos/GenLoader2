@@ -21,10 +21,10 @@ import vapourdrive.genloader.api.GenLoaderAPI;
 import com.google.common.collect.ImmutableList;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import vapourdrive.genloader.utils.json.GsonHelper;
 
 public class BlockDump
 {
-	public static Gson gson = new GsonBuilder().serializeNulls().setPrettyPrinting().disableHtmlEscaping().create();
 	public static HashMap<String, ArrayList<BlockInfo>> ModLists = new HashMap<String, ArrayList<BlockInfo>>();
 
 	public static void init(File configPath)
@@ -56,7 +56,7 @@ public class BlockDump
 				File blockDump = new File(configPath + "/genloader/dumps/blocks/", entry.getKey() + ".json");
 				blockDump.getParentFile().mkdirs();
 				GenLoaderAPI.log.log(Level.INFO, "Created File: " + entry.getKey() + ".json");
-				String stream = gson.toJson(entry.getValue());
+				String stream = GsonHelper.getAdaptedGson().toJson(entry.getValue());
 
 				FileWriter writer = new FileWriter(blockDump, false);
 

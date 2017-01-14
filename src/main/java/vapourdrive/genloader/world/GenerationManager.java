@@ -69,7 +69,7 @@ public class GenerationManager
 
 					FileWriter writer = new FileWriter(file, true);
 
-					writer.write(gson.toJson(stream));
+					writer.write(stream);
 					writer.close();
 				}
 			} catch (IOException error) {

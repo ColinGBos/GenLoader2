@@ -19,9 +19,7 @@ public class WeightedBlockStateSerializer implements JsonSerializer<IWeightedBlo
 		JsonObject object = new JsonObject();
 		object.addProperty("Weight", src.getWeight());
 		object.addProperty("Block", src.getBlockName());
-		Type type = new TypeToken<Map<String, String>>()
-		{
-		}.getType();
+		Type type = new TypeToken<Map<String, String>>(){}.getType();
 		object.add("Properties", context.serialize(src.getProperties(), type));
 		return object;
 	}
