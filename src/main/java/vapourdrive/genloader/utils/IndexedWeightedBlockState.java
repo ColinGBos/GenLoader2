@@ -22,10 +22,6 @@ public class IndexedWeightedBlockState
 	
 	public boolean inRange(int number)
 	{
-		if(number >= this.minThreshhold && number < this.maxThreshold)
-		{
-			return true;
-		}
-		return false;
+		return number >= this.minThreshhold && number < this.maxThreshold;
 	}
 }

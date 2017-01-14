@@ -1,19 +1,17 @@
 package vapourdrive.genloader.utils.json;
 
 import java.lang.reflect.Type;
+import java.util.HashMap;
 import java.util.Map;
 
+import com.google.gson.*;
 import vapourdrive.genloader.api.serializeable.IWeightedBlockState;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonSerializationContext;
-import com.google.gson.JsonSerializer;
 import com.google.gson.reflect.TypeToken;
+import vapourdrive.genloader.api.serializeable.WeightedBlockState;
+import vapourdrive.genloader.api.utils.BlockUtils;
 
-public class WeightedBlockStateSerializer implements JsonSerializer<IWeightedBlockState>
+public class WeightedBlockStateSerializer implements JsonSerializer<IWeightedBlockState>, JsonDeserializer<IWeightedBlockState>
 {
 	GsonBuilder builder = new GsonBuilder();
 	Gson gson = builder.create();
@@ -31,4 +29,15 @@ public class WeightedBlockStateSerializer implements JsonSerializer<IWeightedBlo
 		return object;
 	}
 
+	@Override
+	public WeightedBlockState deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException
+	{
+		JsonObject object = json.getAsJsonObject();
+		int Weight = object.get("Weight").getAsInt();
+		String block = object.get("Block").getAsString();
+		JsonObject array = object.get("Properties").getAsJsonObject();
+		Type type = new TypeToken<HashMap<String, String>>(){}.getType();
+		HashMap<String, String> map = gson.fromJson(array, type);
+		return new WeightedBlockState(Weight, BlockUtils.createState(block, map));
+	}
 }

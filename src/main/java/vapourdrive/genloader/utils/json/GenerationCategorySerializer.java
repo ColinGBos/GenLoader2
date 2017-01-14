@@ -2,14 +2,11 @@ package vapourdrive.genloader.utils.json;
 
 import java.lang.reflect.Type;
 
+import com.google.gson.*;
+import vapourdrive.genloader.api.generation.GenerationCategory;
 import vapourdrive.genloader.api.generation.IGenerationCategory;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonSerializationContext;
-import com.google.gson.JsonSerializer;
-
-public class GenerationCategorySerializer implements JsonSerializer<IGenerationCategory>
+public class GenerationCategorySerializer implements JsonSerializer<IGenerationCategory>, JsonDeserializer<IGenerationCategory>
 {
 
 	@Override
@@ -19,6 +16,13 @@ public class GenerationCategorySerializer implements JsonSerializer<IGenerationC
 		object.addProperty("name", src.getCategoryName());
 		object.addProperty("defaultEnabled", src.getIsDefaultEnabled());
 		return object;
+	}
+
+	@Override
+	public IGenerationCategory deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException
+	{
+		JsonObject object = json.getAsJsonObject();
+		return new GenerationCategory(object.get("name").getAsString(), object.get("defaultEnabled").getAsBoolean());
 	}
 
 }

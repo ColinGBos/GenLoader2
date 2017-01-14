@@ -15,13 +15,10 @@ public class GsonHelper
 	public GsonHelper()
 	{
 		gsonBuilder = new GsonBuilder();
-		
-		gsonBuilder.registerTypeAdapter(IWeightedBlockState.class, new WeightedBlockStateSerializer());
-		gsonBuilder.registerTypeAdapter(IWeightedBlockState.class, new WeightedBlockStateDeserializer());
-		gsonBuilder.registerTypeAdapter(IParsableBlockState.class, new ParsableBlockStateSerializer());
-		gsonBuilder.registerTypeAdapter(IParsableBlockState.class, new ParsableBlockStateDeserializer());
-		gsonBuilder.registerTypeAdapter(IGenerationCategory.class, new GenerationCategorySerializer());
-		gsonBuilder.registerTypeAdapter(IGenerationCategory.class, new GenerationCategoryDeserializer());
+
+		gsonBuilder.registerTypeHierarchyAdapter(IWeightedBlockState.class, new WeightedBlockStateSerializer());
+		gsonBuilder.registerTypeHierarchyAdapter(IParsableBlockState.class, new ParsableBlockStateSerializer());
+		gsonBuilder.registerTypeHierarchyAdapter(IGenerationCategory.class, new GenerationCategorySerializer());
 		
 		gson = gsonBuilder.setPrettyPrinting().disableHtmlEscaping().create();
 	}
